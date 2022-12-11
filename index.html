@@ -1,0 +1,51 @@
+<body>
+    <script>
+
+
+        function testFunction(x) {
+            let testResult = x + 2;
+            return testResult;
+        }
+
+        function cashingDecorator(fn) {
+            let cache = {};
+
+            return function(x) {
+                console.log('arg', x);
+                console.log(cache);
+                if (cache[x]) {
+                console.log('from cache', x, cache[x]);
+
+                    return cache[x];
+
+                }
+                
+                let result = fn(x);
+                console.log('not from cache', x, result);
+
+                let cacheArgs = Object.keys(cache);
+                //console.log('-----', cacheArgs);
+                if (cacheArgs.length >= 5) {
+                    delete cache[cacheArgs[0]];  
+                }
+
+                cache[x] = result;
+                console.log(cache);
+                return result;
+            }
+        }
+
+        testFunction = cashingDecorator(testFunction);
+
+        testFunction(7);
+        testFunction(600);
+        testFunction(121);
+        testFunction(920);
+        testFunction(7);
+        testFunction(602);
+        testFunction(1256);
+        testFunction(9812);
+        testFunction(7);
+
+    </script>
+</body>
